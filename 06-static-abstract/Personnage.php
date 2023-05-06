@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Class Personnage
+ * abstract class Personnage
  *
  * Cette classe représente un personnage de jeu vidéo:
  *
@@ -32,20 +32,24 @@
  * Les setters permettent de modifier les attributs de l'objet Personnage en vérifiant les données passées en paramètre.
  *
  * Les getters permettent de récupérer les attributs de l'objet Personnage.
+ *
+ * Cette classe est abstraite, ce qui signifie qu'on ne peut pas l'instancier directement. Il faut passer par une
+ * classe qui hérite de cette classe (extends)
  */
-class Personnage
+abstract class Personnage
 {
     // Attributs - protected : comme private, impossible d'y accéder ou de le modifier depuis l'extérieur de
     // l'instance de classe, par contre, les descendants de cette classe (extends) pourront les lire et modifier
 
-
+    private $createTime = null;
     protected $type;
     protected $nom;
     protected $genre;
     protected $pointDeVie = 1000;
-    protected $attaque = 100;
+    protected $puissance = 100;
     protected $defense = 100;
-    protected $dexterite = 100;
+    protected $dexterite = 35;
+    protected $experience = 0;
 
     // Constantes
     public const NB_FACE_DE = 12; // dé de type Dodécaèdre
@@ -75,16 +79,20 @@ class Personnage
             $this->setGenre($gender);
             // appel la méthode protégée qui initialise les points de vie (1000 par défaut auquel on ajoute 20 jets de dé)
             $this->initPointDeVie();
-            // appel la méthode protégée qui initialise l'attaque (100 par défaut auquel on ajoute/diminue avec 1 chance sur 2 de 2 jets de dé)
-            $this->initAttaque();
+            // appel la méthode protégée qui initialise la Puissance (100 par défaut auquel on ajoute/diminue avec 1 chance sur
+            // 2 de 2 jets de dé)
+            $this->initPuissance();
             // appel la méthode protégée qui initialise la défense (100 par défaut auquel on ajoute/diminue avec 1 chance sur 2 de 1 jet de dé)
             $this->initDefense();
             // appel la méthode protégée qui initialise la dextérité (100 par défaut auquel on ajoute/diminue avec 3 chances sur 4 de 1 jet de dé)
             $this->initDexterite();
+            // on initialise le temps de création de l'objet privé, l'enfant ne pourra pas le modifier autrement que
+            // via le constructeur parent
+            $this->createTime= time();
         }
 
-        // fonction publique qui lance les dés
-        public function lanceDes(int $des=1):array{
+        // fonction publique qui lance les dés qui n'a pas besoin d'être instanciée pour fonctionner !
+       public static function lanceDes(int $des=1):array{
             // sortie numérique pour le return
             $nb = 0;
             // sortie en tableau pour le tracing des actions
@@ -121,9 +129,9 @@ class Personnage
 
         // Créez une méthode protégée qui va prendre l'attaque (avec le getter) et rajouter OU diminuer (1 chance sur 2) 2
         // lancés de dés en utilisant la constant NB_FACE_DE et mettre à jour l'attaque (avec le setter)
-        protected function initAttaque(){
+        protected function initPuissance(){
             // On prend l'attaque avec le getter
-            $att = $this->getAttaque();
+            $att = $this->getPuissance();
             // On lance un hasard à 2 possibilités pour savoir si on ajoute ou on enlève les 2 lancés de dés
             $lance = mt_rand(1,2);
             // Si on a 1, on enlève
@@ -134,7 +142,7 @@ class Personnage
                 $att += $this->lanceDes(2)['total'];
             }
             // On modifie l'attaque avec le setter
-            $this->setAttaque($att);
+            $this->setPuissance($att);
         }
 
         // Créez une méthode protégée qui va prendre la défense (avec le getter) et rajouter OU diminuer (1 chance sur 2) 1
@@ -210,9 +218,9 @@ class Personnage
                 $this->pointDeVie = $pointDeVie;
             }
 
-            public function setAttaque(int $attaque): void
+            public function setPuissance(int $puissance): void
             {
-                $this->attaque = $attaque;
+                $this->puissance = $puissance;
             }
 
             public function setDefense(int $defense): void
@@ -225,7 +233,10 @@ class Personnage
                 $this->dexterite = $dexterite;
             }
 
-
+            public function setExperience(int $experience): void
+            {
+                $this->experience = $experience;
+            }
 
 
         // Getters - ou accessors
@@ -255,9 +266,9 @@ class Personnage
              }
 
 
-            public function getAttaque(): int
+            public function getPuissance(): int
             {
-                return $this->attaque;
+                return $this->puissance;
             }
 
 
@@ -272,5 +283,14 @@ class Personnage
                 return $this->dexterite;
             }
 
+            public function getExperience(): int
+            {
+                return $this->experience;
+            }
 
+            // création d'une méthode abstract pour forcer les classes filles à l'utiliser
+            // elle prend en paramètre un objet de type Personnage
+            // Attention, une méthode abstract ne peut pas avoir de corps et ne peut
+            // se trouver que dans une classe abstract
+            abstract public function attaquer(Personnage $cible): ?array;
 }
