@@ -304,4 +304,28 @@ Orcs
 lucia
 Féminin
 Elfes
+
+
+
+
+
+
+
+
+
+
+
+
+André
+Non genré
+Gobelins
+pierre
+Masculin
+Humains
+André
+Non genré
+Gobelins
+pierre
+Masculin
+Humains
 
