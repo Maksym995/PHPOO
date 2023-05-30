@@ -8,7 +8,8 @@ if(isset($_GET['user'])) {
 }elseif(isset($_GET['message'])) {
     // appel de la vue (affichage)
     require_once "../view/themessage_view.php";
-
+    $messageManager = new ThemessageManager($pdo);
+    
 }elseif(isset($_GET['messageManager'])) {
     // appel de la vue (affichage)
     require_once "../view/themessage_manager_view.php";
