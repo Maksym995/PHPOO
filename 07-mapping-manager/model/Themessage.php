@@ -1,5 +1,6 @@
 <?php
 
+<<<<<<< HEAD
 namespace model ;
 
 // on veut utiliser Exception
@@ -14,11 +15,26 @@ class Themessage
     private string $titleTheMessage;
     private string $slugTheMessage;
     private DateTime $dateTheMessage;
+=======
+namespace model;
+
+class Themessage
+{
+    // attributs
+    private int $idTheMessage;
+    private string $titleTheMessage;
+    private string $slugTheMessage;
+    private string $dateTheMessage;
+>>>>>>> 33d70d94e84e47a310f9e77111593ead2de533af
     private string $messageTheMessage;
     private int $TheMessageIdTheUser;
 
     // constructeur
+<<<<<<< HEAD
     public function __construct(array $datas) 
+=======
+    public function __construct(array $datas)
+>>>>>>> 33d70d94e84e47a310f9e77111593ead2de533af
     {
         $this->hydrate($datas);
     }
@@ -32,6 +48,7 @@ class Themessage
             if (method_exists($this, $method)) { // si la méthode existe
                 // utilisation du setter correspondant
                 $this->$method($value);
+<<<<<<< HEAD
                 // echo "setter $method($value)<br>;
             }else{
                 //echo "setter $method($value) n'existe pas <br>;
@@ -39,6 +56,12 @@ class Themessage
         }
     }
     
+=======
+            }
+        }
+    }
+
+>>>>>>> 33d70d94e84e47a310f9e77111593ead2de533af
     // getters
     public function getIdTheMessage(): int
     {
@@ -55,7 +78,11 @@ class Themessage
         return $this->slugTheMessage;
     }
 
+<<<<<<< HEAD
     public function getDateTheMessage(): DateTime
+=======
+    public function getDateTheMessage(): string
+>>>>>>> 33d70d94e84e47a310f9e77111593ead2de533af
     {
         return $this->dateTheMessage;
     }
@@ -70,6 +97,65 @@ class Themessage
         return $this->TheMessageIdTheUser;
     }
 
+<<<<<<< HEAD
     // setters
     public function set
 }
+=======
+
+
+    // setters
+
+    public
+    function setIdTheMessage(int $idTheMessage): void
+    {
+        $this->idTheMessage = $idTheMessage;
+    }
+
+
+    public
+    function setTitleTheMessage(string $titleTheMessage): void
+    {
+        $this->titleTheMessage = $titleTheMessage;
+    }
+
+
+    public
+    function setSlugTheMessage(string $slugTheMessage): void
+    {
+        $this->slugTheMessage = $slugTheMessage;
+    }
+
+    public
+    function setDateTheMessage(string $dateTheMessage): void
+    {
+        // si la date est une date SQL valide
+        if (date('Y-m-d H:i:s', strtotime($dateTheMessage)) == $dateTheMessage) {
+            // on affecte la date
+            $this->dateTheMessage = $dateTheMessage;
+        } else {
+            throw new \Exception("La date n'est pas valide");
+        }
+
+    }
+
+
+    public
+    function setMessageTheMessage(string $messageTheMessage): void
+    {
+        if(empty($messageTheMessage)){
+            throw new \Exception("Le message ne peut pas être vide");
+        }else{
+            $this->messageTheMessage = $messageTheMessage;
+        }
+
+    }
+
+    public
+    function setTheMessageIdTheUser(int $TheMessageIdTheUser): void
+    {
+        $this->TheMessageIdTheUser = $TheMessageIdTheUser;
+    }
+
+}
+>>>>>>> 33d70d94e84e47a310f9e77111593ead2de533af
